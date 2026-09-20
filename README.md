@@ -42,7 +42,7 @@ The system uses:
 
 ## 🏗️ Architecture
 
-![AuctionPlatform Architecture](docs/architecture.png)
+![AuctionPlatform Architecture](https://raw.githubusercontent.com/Harshal-belgamwar/auction-platform/docs/architecture.png)
 
 The application consists of independent microservices communicating through the API Gateway and dedicated infrastructure components.
 
@@ -86,7 +86,7 @@ The application consists of independent microservices communicating through the 
 * OpenFeign
 * Spring Scheduler
 
-### ⚡ Infrastructure
+### ⚡Data & Infrastructure
 
 * MySQL
 * Redis
@@ -219,7 +219,7 @@ The project uses different communication mechanisms based on the requirement:
 | ⚡ Redis       | Current auction price                     |
 | 🔒 Redisson   | Distributed auction locks                 |
 | 📨 Kafka      | Bid events                                |
-| ☁️ Cloudinary | Product images                            |
+| ☁️ Cloudinary | store Product images                            |
 
 ---
 
@@ -362,14 +362,14 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-> 🔒 Never commit passwords, JWT secrets, API keys, or other credentials to the repository.
-
----
 
 ## 👨‍💻 Author
 
 **Harshal Belgamwar**
 
-Computer Engineering — PICT, Pune
+🎓 Computer Engineering — PICT, Pune
 
-🔗 [GitHub](https://github.com/Harshal-belgamwar)
+🐙 **GitHub:** [Harshal Belgamwar](https://github.com/Harshal-belgamwar)
+💼 **LinkedIn:** [Harshal Belgamwar]( https://www.linkedin.com/in/harshal-belgamwar/)
+
+
