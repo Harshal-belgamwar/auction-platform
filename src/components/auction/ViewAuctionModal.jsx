@@ -240,14 +240,32 @@ const ViewAuctionModal = ({ isOpen, onClose, auctionId }) => {
 
                                 <div>
                                     <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                                        Winner ID
+                                        Winner
                                     </p>
 
-                                    <p className="mt-1 text-sm text-white">
-                                        {auction.winnerId || "Not decided"}
-                                    </p>
+                                    {auction.winnerId ? (
+                                        <div className="mt-1 space-y-1 text-sm text-white">
+                                            <p>
+                                                <span className="text-slate-400">ID:</span>{" "}
+                                                {auction.winnerId}
+                                            </p>
+
+                                            <p>
+                                                <span className="text-slate-400">Name:</span>{" "}
+                                                {auction.winnerName}
+                                            </p>
+
+                                            <p>
+                                                <span className="text-slate-400">Email:</span>{" "}
+                                                {auction.winnerEmail}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <p className="mt-1 text-sm text-slate-400">
+                                            Not decided
+                                        </p>
+                                    )}
                                 </div>
-
                             </div>
                         </div>
 
