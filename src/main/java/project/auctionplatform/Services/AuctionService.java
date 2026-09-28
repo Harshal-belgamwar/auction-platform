@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import project.auctionplatform.Client.BidClient;
 import project.auctionplatform.Client.ProductClient;
 import project.auctionplatform.DTO.*;
 import project.auctionplatform.DTO.AuctionRequest;
@@ -32,6 +33,7 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final CurrentUserService currentUserService;
     private final ProductClient productClient;
+    private final BidClient bidClient;
 
 
     public AuctionResponse createAuction(AuctionRequest request) {
@@ -72,6 +74,8 @@ public class AuctionService {
                 .build();
 
         Auction savedAuction = auctionRepository.save(auction);
+
+        productClient.updateProductStatusAuctioned(request.getProductId());
 
         return mapToResponse(savedAuction);
     }
@@ -146,6 +150,8 @@ public class AuctionService {
 
         ProductResponse product = productClient.getProductById(auction.getProductId());
 
+        WinnerInfo winner = bidClient.getWinner(auction.getId());
+
         return AuctionResponse.builder()
                 .id(auction.getId())
                 .product(product)
@@ -155,7 +161,9 @@ public class AuctionService {
                 .startTime(auction.getStartTime())
                 .endTime(auction.getEndTime())
                 .status(auction.getStatus())
-                .winnerId(auction.getWinnerId())
+                .winnerId(winner != null ? winner.getBidderId() : null)
+                .winnerName(winner != null ? winner.getName() : null)
+                .winnerEmail(winner != null ? winner.getEmail() : null)
                 .createdAt(auction.getCreatedAt())
                 .updatedAt(auction.getUpdatedAt())
                 .build();

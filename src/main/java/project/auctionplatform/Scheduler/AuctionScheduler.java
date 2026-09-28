@@ -5,6 +5,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import project.auctionplatform.Client.BidClient;
+import project.auctionplatform.Client.ProductClient;
+import project.auctionplatform.DTO.WinnerInfo;
 import project.auctionplatform.Enum.AuctionStatus;
 import project.auctionplatform.Model.Auction;
 import project.auctionplatform.Repositories.AuctionRepository;
@@ -26,7 +29,8 @@ public class AuctionScheduler {
     private final AuctionSseService auctionSseService;
     private final ActiveAuctionSseService activeAuctionSseService;
     private final RedisService redisService;
-
+    private final ProductClient productClient;
+    private final BidClient bidClient;
 
 
     @Scheduled(fixedRate = 60000)
@@ -66,6 +70,24 @@ public class AuctionScheduler {
                     "ENDED"
             );
             redisService.deleteCurrentBid(auction.getId());
+            System.out.println(auction.toString());
+            int count = bidClient.getCountBids(auction.getId());
+
+//            update product status
+            if(count>0){
+                productClient.updateProductStatusSold(auction.getProductId());
+            }else{
+                productClient.updateProductStatusAvailable(auction.getProductId());
+            }
+
+//            Declare winner
+            WinnerInfo winner = bidClient.getWinner(auction.getId());
+            if(winner != null){
+                auction.setWinnerId(winner.getBidderId());
+            }
+            auctionRepository.save(auction);
+
+
         }
 
         if(!auctionsToEnd.isEmpty()){

@@ -31,6 +31,9 @@ public class AuctionResponse {
 
     private Long winnerId;
 
+    private String winnerName;
+    private String winnerEmail;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
