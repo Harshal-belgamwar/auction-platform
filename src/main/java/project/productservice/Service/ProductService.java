@@ -1,6 +1,7 @@
 package project.productservice.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.productservice.DTO.ProductRequest;
@@ -93,6 +94,7 @@ public class ProductService {
 
         return productRepository.findBySellerId(userId)
                 .stream()
+                .filter(product -> product.getStatus().equals(ProductStatus.AVAILABLE))
                 .map(product -> {
 
                     Map<Long, String> imageMap = productImagesRepository
@@ -208,6 +210,34 @@ public class ProductService {
     }
 
 //    update product status
+    public ResponseEntity<?> updateStatusAuctioned(Long id) {
+        int num = productRepository.updateStatus(id, ProductStatus.AUCTIONED);
+
+        if(num > 0)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+
+    }
+
+    public ResponseEntity<?> updateStatusSold(Long id) {
+        int num = productRepository.updateStatus(id, ProductStatus.SOLD);
+
+        if(num > 0)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+
+    }
+    public ResponseEntity<?> updateStatusAvailable(Long id) {
+        int num = productRepository.updateStatus(id, ProductStatus.AVAILABLE);
+
+        if(num > 0)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+
+    }
 
 
 

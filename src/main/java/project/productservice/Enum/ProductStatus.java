@@ -4,5 +4,5 @@ public enum ProductStatus {
     AVAILABLE,
     AUCTIONED,
     SOLD,
-    INACTIVE
+    UNSOLD
 }

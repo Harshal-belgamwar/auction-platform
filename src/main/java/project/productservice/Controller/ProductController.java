@@ -72,6 +72,26 @@ public class ProductController {
         );
     }
 
+//    update product status
+    @PutMapping("/{id}/auctioned")
+    public ResponseEntity<?> updateProductStatusAuctioned(
+            @PathVariable Long id
+    ){
+        return productService.updateStatusAuctioned(id);
+    }
+
+    @PutMapping("/{id}/sold")
+    public ResponseEntity<?> updateProductStatusSold(
+            @PathVariable Long id
+    ){
+        return productService.updateStatusSold(id);
+    }
+    @PutMapping("/{id}/available")
+    public ResponseEntity<?> updateProductStatusAvailable(
+            @PathVariable Long id
+    ){
+        return productService.updateStatusAvailable(id);
+    }
 
     // DELETE PRODUCT
     @DeleteMapping("/{id}")
