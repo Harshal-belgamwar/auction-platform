@@ -146,5 +146,11 @@ public class AuthService {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
+    public GetUser getUserById(Long id) {
+        User user = userRepository.findById(id);
+
+        return GetUser.builder().name(user.getName()).email(user.getEmail()).build();
+    }
+
 
 }

@@ -38,6 +38,11 @@ public class AuthController {
         );
     }
 
+    @GetMapping("/{id}/user")
+    public GetUser getUser(@PathVariable Long id) {
+        return authService.getUserById(id);
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletResponse response) {
 
