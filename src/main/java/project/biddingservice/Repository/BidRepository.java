@@ -27,10 +27,11 @@ public interface BidRepository
 """)
     List<Long> findParticipatedAuction(@Param("bidderId") Long id);
 
-
+    int countBidsByAuctionId(Long auctionId);
 
     List<Bid> findByAuctionIdOrderByCreatedAtDesc(Long auctionId);
 
+    Bid findFirstByAuctionIdOrderByAmountDesc(Long auctionId);
  ;
 
 

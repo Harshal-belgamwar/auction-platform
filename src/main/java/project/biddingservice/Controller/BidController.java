@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import project.biddingservice.DTO.AuctionResponse;
 import project.biddingservice.DTO.BidRequest;
 import project.biddingservice.DTO.BidResponse;
+import project.biddingservice.DTO.WinnerBid;
 import project.biddingservice.Service.BiddingService;
 
+import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -65,6 +67,11 @@ public class BidController {
         return ResponseEntity.ok(bids);
     }
 
+    @GetMapping("/{auctionId}/bidcount")
+    public int getCountBids(@PathVariable Long auctionId) {
+        return biddingService.getCountBids(auctionId);
+    }
+
 
     // ==============================
     // GET MY PARTICIPATED AUCTIONS
@@ -77,5 +84,10 @@ public class BidController {
                 biddingService.getMyBids();
 
         return ResponseEntity.ok(auctions);
+    }
+
+    @GetMapping("/{id}/winner")
+    public WinnerBid getWinnerBid(@PathVariable Long id){
+        return biddingService.getWinner(id);
     }
 }
