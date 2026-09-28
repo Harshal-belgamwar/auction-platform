@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import project.biddingservice.Client.AuctionClient;
-import project.biddingservice.DTO.AuctionResponse;
-import project.biddingservice.DTO.BidRequest;
-import project.biddingservice.DTO.BidResponse;
-import project.biddingservice.DTO.UpdatePrice;
+import project.biddingservice.Client.AuthClient;
+import project.biddingservice.DTO.*;
 import project.biddingservice.Entity.Bid;
 
 import project.biddingservice.Repository.BidRepository;
@@ -31,6 +29,7 @@ public class BiddingService {
     private final CurrentUserService currentUserService;
     private final RedisService redisService;
     private  final RedissonClient redissonClient;
+    private final AuthClient authClient;
 
     // ==============================
     // PLACE BID
@@ -168,6 +167,37 @@ public class BiddingService {
 
     }
 
+//    get bids count
+    public int getCountBids(Long auctionId) {
+        return bidRepository.countBidsByAuctionId(auctionId);
+    }
+
+//    get winner
+    public WinnerBid getWinner(Long auctionId) {
+
+        Bid bid = bidRepository.findFirstByAuctionIdOrderByAmountDesc(auctionId);
+
+        // No bids for this auction
+        if (bid == null) {
+            return null;
+        }
+
+        GetUser user = authClient.getUser(bid.getBidderId());
+
+        // User not found
+        if (user == null) {
+            return null;
+        }
+
+        return WinnerBid.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .price(bid.getAmount())
+                .auctionId(bid.getAuctionId())
+                .build();
+
+    }
+
 
 
 
@@ -180,7 +210,7 @@ public class BiddingService {
             Bid bid
     ) {
 
-        String name = currentUserService.getUserName();
+        String name = authClient.getUser(bid.getBidderId()).getName();
 
         return BidResponse.builder()
                 .bidAmount(bid.getAmount())
