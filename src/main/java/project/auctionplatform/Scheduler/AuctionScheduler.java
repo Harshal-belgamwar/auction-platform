@@ -76,15 +76,16 @@ public class AuctionScheduler {
 //            update product status
             if(count>0){
                 productClient.updateProductStatusSold(auction.getProductId());
+                WinnerInfo winner = bidClient.getWinner(auction.getId());
+                if(winner != null){
+                    auction.setWinnerId(winner.getBidderId());
+                }
             }else{
                 productClient.updateProductStatusAvailable(auction.getProductId());
             }
 
-//            Declare winner
-            WinnerInfo winner = bidClient.getWinner(auction.getId());
-            if(winner != null){
-                auction.setWinnerId(winner.getBidderId());
-            }
+
+
             auctionRepository.save(auction);
 
 
