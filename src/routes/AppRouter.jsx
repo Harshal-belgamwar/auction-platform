@@ -20,6 +20,7 @@ import AuctionDetails from '../pages/AuctionDetails.jsx';
 import DashBoard from '../pages/DashBoard/DashBoard.jsx';
 import ActiveAuctions from '../pages/Auction/ActiveAuction.jsx';
 import MyParticipatedAuction from '../components/Bidding/MyParticipatedAuction.jsx';
+import Notification from '../pages/Notification/Notification.jsx';
 // PrivateRoute removed - routes are now public
 
 export default function AppRouter() {
@@ -43,6 +44,7 @@ export default function AppRouter() {
         <Route path="/dashboard/auction/:id" element={<AuctionDetails />} />
         <Route path="/dashboard/product-management" element={<ProductManagement />} />
         <Route path="/dashboard/categories" element={<CategoryManagement />} />
+        <Route path='/dashboard/notifications' element={<Notification />} />
       </Route>
 
       {/* Fallback */}

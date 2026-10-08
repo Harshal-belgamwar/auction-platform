@@ -149,47 +149,56 @@ const AuctionCard = ({
 
       </div>
 
-      <div className="grid grid-cols-4 border-t border-slate-800">
+      <div className="grid border-t border-slate-800">
+        {auction.status === "UPCOMING" ? (
+          <>
+            <button
+              onClick={() => onView(auction)}
+              className="flex items-center justify-center gap-2 p-4 text-sm text-slate-300 transition hover:bg-slate-800"
+            >
+              <Eye size={16} />
+              View
+            </button>
 
-        <button
-          onClick={() => onView(auction)}
-          className="flex items-center justify-center gap-2 p-4 text-sm text-slate-300 transition hover:bg-slate-800"
-        >
-          <Eye size={16} />
-          View
-        </button>
+            {/* Edit */}
+            <button
+              onClick={() => onEdit(auction)}
+              className="flex items-center justify-center gap-2 border-l border-slate-800 p-4 text-sm text-slate-300 transition hover:bg-slate-800"
+            >
+              <Pencil size={16} />
+              Edit
+            </button>
 
-        <button
-          onClick={() =>
-            canEdit && onEdit(auction)
-          }
-          disabled={!canEdit}
-          className="flex items-center justify-center gap-2 border-l border-slate-800 p-4 text-sm text-slate-300 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:text-slate-600"
-        >
-          <Pencil size={16} />
-          Edit
-        </button>
+            {/* Cancel */}
+            <button
+              onClick={() => onCancel(auction)}
+              className="flex items-center justify-center gap-2 border-l border-slate-800 p-4 text-sm text-orange-400 transition hover:bg-slate-800"
+            >
+              <XCircle size={16} />
+              Cancel
+            </button>
 
-        <button
-          onClick={() =>
-            canCancel && onCancel(auction)
-          }
-          disabled={!canCancel}
-          className="flex items-center justify-center gap-2 border-x border-slate-800 p-4 text-sm text-orange-400 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:text-slate-600"
-        >
-          <XCircle size={16} />
-          Cancel
-        </button>
-
-        <button
-          onClick={() => onDelete(auction)}
-          className="flex items-center justify-center gap-2 p-4 text-sm text-red-400 transition hover:bg-slate-800"
-        >
-          <Trash2 size={16} />
-          Delete
-        </button>
-
+            {/* Delete */}
+            <button
+              onClick={() => onDelete(auction)}
+              className="flex items-center justify-center gap-2 border-l border-slate-800 p-4 text-sm text-red-400 transition hover:bg-slate-800"
+            >
+              <Trash2 size={16} />
+              Delete
+            </button>
+          </>
+        ) : (
+       
+          <button
+            onClick={() => onView(auction)}
+            className="flex items-center justify-center gap-2 p-4 text-sm text-slate-300 transition hover:bg-slate-800"
+          >
+            <Eye size={16} />
+            View
+          </button>
+        )}
       </div>
+     
 
     </div>
   );
