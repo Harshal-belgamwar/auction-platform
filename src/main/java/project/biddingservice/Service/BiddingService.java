@@ -64,7 +64,7 @@ public class BiddingService {
 
             // Critical section starts here
 
-            BigDecimal currentAmount =
+            BigDecimal lastAmount =
                     redisService.getCurrentBid(
                             request.getAuctionId()
                     );
@@ -72,17 +72,17 @@ public class BiddingService {
 
 
 
-            if (currentAmount == null) {
+            if (lastAmount == null) {
                 throw new RuntimeException(
-                        "Current bid not found"
+                        "Previous bid not found"
                 );
             }
 
             if (request.getAmount()
-                    .compareTo(currentAmount) <= 0) {
+                    .compareTo(lastAmount) <= 0) {
 
                 throw new RuntimeException(
-                        "Bid amount must be greater than current amount"
+                        "Bid amount must be greater than previous amount"
                 );
             }
 
@@ -93,23 +93,34 @@ public class BiddingService {
                     request.getAmount()
             );
 
-//            add kafka event
+            try{
 
-            // Save bid
+                Bid bid = new Bid();
 
-            Bid bid = new Bid();
-
-            bid.setBidderId(bidderId);
-            bid.setAmount(request.getAmount());
-            bid.setAuctionId(request.getAuctionId());
-
-            Bid savedBid =
-                    bidRepository.save(bid);
-
-            auctionClient.updateAuctionPrice(bid.getAuctionId(), UpdatePrice.builder().amount(bid.getAmount()).build());
+                bid.setBidderId(bidderId);
+                bid.setAmount(request.getAmount());
+                bid.setAuctionId(request.getAuctionId());
 
 
-            return convertToResponse(savedBid);
+
+                Bid savedBid =
+                        bidRepository.save(bid);
+
+                auctionClient.updateAuctionPrice(bid.getAuctionId(), UpdatePrice.builder().amount(bid.getAmount()).build());
+
+
+                return convertToResponse(savedBid);
+
+
+            }catch (Exception e){
+                redisService.setCurrentBid(
+                        request.getAuctionId(),
+                        lastAmount
+                );
+                throw  e;
+            }
+
+
 
         } catch (InterruptedException e) {
 
